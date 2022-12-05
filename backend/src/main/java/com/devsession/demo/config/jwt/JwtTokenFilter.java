@@ -1,6 +1,6 @@
 package com.devsession.demo.config.jwt;
 
-import com.devsession.demo.config.services.PersonDetails;
+import com.devsession.demo.model.PersonDetails;
 import com.devsession.demo.model.Person;
 import com.devsession.demo.service.PersonService;
 import org.slf4j.Logger;
@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
     private PersonService personService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

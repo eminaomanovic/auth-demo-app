@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken} from "./Common";
+import {getToken, setSession} from "./Common";
 
 export const config = () => {
     const token = getToken();
@@ -9,20 +9,24 @@ export const config = () => {
     return {
         headers: {
             'Authorization': 'Bearer ' + token,
-            "Content-type": "application/json"
+            'Content-type': 'application/json'
         },
     };
 }
 export const registerUser = async (user) => {
     return ((await createRequest())
         .post("/auth/register", user)
-        .then((response) => response.data));
+        .then((response) => {
+            setSession(response.data.person, response.data.token)
+        }));
 };
 
 export const loginUser = async (user) => {
     return ((await createRequest())
         .post("/auth/login", user)
-        .then((response) => response.data));
+        .then((response) => {
+            setSession(response.data.person, response.data.token)
+        }));
 }
 
 export const createRequest = async () => {

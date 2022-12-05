@@ -1,8 +1,8 @@
 package com.devsession.demo.config;
 
-import com.devsession.demo.config.jwt.AuthEntryPointJwt;
-import com.devsession.demo.config.jwt.AuthTokenFilter;
-import com.devsession.demo.config.services.UserDetailsServiceImpl;
+import com.devsession.demo.config.jwt.JwtEntryPoint;
+import com.devsession.demo.config.jwt.JwtTokenFilter;
+import com.devsession.demo.service.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,20 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration {
     AuthenticationManager authenticationManager;
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private PersonDetailsService personDetailsService;
     @Autowired
-    private AuthEntryPointJwt authEntryPointJwt;
+    private JwtEntryPoint authEntryPointJwt;
 
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+    public JwtTokenFilter authenticationJwtTokenFilter() {
+        return new JwtTokenFilter();
     }
 
     @Bean
@@ -49,13 +47,13 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(personDetailsService).passwordEncoder(passwordEncoder());
         authenticationManager = authenticationManagerBuilder.build();
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/landing-page").authenticated()
+                .antMatchers("/test").authenticated()
                 .anyRequest().permitAll().and().authenticationManager(authenticationManager);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -1,33 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import {Formik} from 'formik';
+import { useNavigate } from "react-router-dom";
 import {Button, Form} from 'react-bootstrap';
 import {loginUser} from '../../utilities/ServerCall';
-import {setSession} from '../../utilities/Common';
 import * as yup from 'yup';
-
 import './login.css';
 
 const Login = () => {
-
+    const navigate = useNavigate();
     const [loginError, setLoginError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [state, setState] = useState({});
 
     useEffect(() => {
-        // eslint-disable-next-line
+        return () => {
+            setState({});
+        };
     }, []);
 
     const handleSubmit = async (user) => {
         setLoading(true);
         try {
-            const data = await loginUser(user);
-            setSession(data.person, data.token);
-            setLoading(false);
-            window.location.href = "/";
+            await loginUser(user);
         } catch (e) {
-            console.log(e);
             setLoginError(true);
         }
         setLoading(false);
+        navigate("/",  { replace: true });
+        window.location.reload();
     }
 
     const validationSchema = yup.object().shape({
@@ -87,7 +87,7 @@ const Login = () => {
                             </Form.Control.Feedback>
                         </Form.Group>
                         <Button disabled={loading} block type="submit">
-                            LOGIN
+                            SIGN IN
                         </Button>
                     </Form>
                 )}

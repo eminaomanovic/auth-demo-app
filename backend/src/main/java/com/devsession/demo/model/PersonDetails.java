@@ -1,6 +1,5 @@
-package com.devsession.demo.config.services;
+package com.devsession.demo.model;
 
-import com.devsession.demo.model.Person;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

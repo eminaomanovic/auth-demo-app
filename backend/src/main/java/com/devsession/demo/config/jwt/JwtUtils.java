@@ -1,6 +1,6 @@
 package com.devsession.demo.config.jwt;
 
-import com.devsession.demo.config.services.PersonDetails;
+import com.devsession.demo.model.PersonDetails;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

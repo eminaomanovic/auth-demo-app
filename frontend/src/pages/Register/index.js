@@ -1,21 +1,36 @@
 import React, {useEffect, useState} from 'react';
 import {Formik} from 'formik';
 import {Button, Form} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 import {registerUser} from '../../utilities/ServerCall';
-import {setSession} from '../../utilities/Common';
+import {getUser, removeSession, setSession} from '../../utilities/Common';
 import * as yup from 'yup';
+import { useNavigate } from "react-router-dom";
 
 import './register.css';
 
 const Register = () => {
-
+    const navigate = useNavigate();
     const [emailError, setEmailError] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [state, setState] = useState({});
 
     useEffect(() => {
-        // eslint-disable-next-line
+        return () => {
+            setState({}); // This worked for me
+        };
     }, []);
+    const handleSubmit = async (user) => {
+        setLoading(true);
+        try {
+            removeSession();
+            await registerUser(user);
+        } catch (error) {
+            console.log(error);
+        }
+        setLoading(false);
+        navigate("/",  { replace: true } );
+        window.location.reload();
+    }
 
     let whitespaceRegex = new RegExp("^(?!\\s+$).*");
     let nameRegex = new RegExp("^[A-ZÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽĐ][a-zA-Zàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçšžđ∂ðÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆŠŽĐ ,.'-]+$", "g");
@@ -45,21 +60,6 @@ const Register = () => {
             )
             .required("*Password is required"),
     });
-
-    const handleSubmit = async (user) => {
-        setLoading(true);
-        try {
-            const data = await registerUser(user);
-            setSession(data.person, data.token);
-            window.location.href = "/";
-        } catch (error) {
-            console.log(error);
-            if (error.response.data.status === 409) {
-                setEmailError(true);
-            }
-        }
-        setLoading(false);
-    }
 
     return (
         <div className="register-container">
@@ -136,7 +136,7 @@ const Register = () => {
 
                         <Button disabled={loading} style={{marginTop: 80}} block
                                 type="submit">
-                            REGISTER
+                            SIGN UP
                         </Button>
                     </Form>
                 )}

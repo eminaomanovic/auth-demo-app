@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import { Nav, Navbar} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import {removeSession, getUser} from '../../utilities/Common';
@@ -7,15 +7,22 @@ import './header.css';
 const Header = () => {
 
     const user = getUser();
+    const [loading, setLoading] = useState(false);
 
     const handleLogout = () => {
         removeSession();
         window.location.reload();
     };
 
-    useEffect(() => {
-    }, [])
-    console.log(user);
+    const handleLoading = () => {
+        setLoading(false);
+    }
+
+    useEffect(()=>{
+        window.addEventListener("load",handleLoading);
+        return () => window.removeEventListener("load",handleLoading);
+    },[]);
+
     return (
         <>
             <div className="topbar-container">

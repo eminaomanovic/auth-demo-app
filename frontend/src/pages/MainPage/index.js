@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react';
 import {getUser, removeSession, validToken} from "../../utilities/Common";
 
-const LandingPage = () => {
+const MainPage = () => {
     const user = getUser();
 
     useEffect(() => {
     }, []);
 
     try {
-        console.log(user != null);
         if (user != null) {
             return (
                 <div>
@@ -19,7 +18,6 @@ const LandingPage = () => {
             return (<div>Please login or register</div>);
         }
     } catch (e) {
-        console.log(e);
         if (!validToken()) {
             removeSession();
         }
@@ -27,4 +25,4 @@ const LandingPage = () => {
 
 }
 
-export default LandingPage;
+export default MainPage;

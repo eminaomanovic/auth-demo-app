@@ -1,6 +1,7 @@
-package com.devsession.demo.config.services;
+package com.devsession.demo.service;
 
 import com.devsession.demo.model.Person;
+import com.devsession.demo.model.PersonDetails;
 import com.devsession.demo.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class PersonDetailsService implements UserDetailsService {
     @Autowired
     PersonRepository personRepository;
 
