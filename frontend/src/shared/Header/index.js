@@ -1,12 +1,11 @@
 import {useEffect, useState} from 'react';
 import { Nav, Navbar} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import {removeSession, getUser} from '../../utilities/Common';
+import {removeSession, getUser, validToken} from '../../utilities/Common';
 import './header.css';
 
 const Header = () => {
 
-    const user = getUser();
     const [loading, setLoading] = useState(false);
 
     const handleLogout = () => {
@@ -20,7 +19,7 @@ const Header = () => {
 
     useEffect(()=>{
         window.addEventListener("load",handleLoading);
-        return () => window.removeEventListener("load",handleLoading);
+        return () => window.removeEventListener("load", handleLoading);
     },[]);
 
     return (
@@ -29,7 +28,7 @@ const Header = () => {
                 <div className="social-media-container">
                 </div>
                 <Nav className="topbar-nav-links">
-                    {user !== null ?
+                    {getUser() !== null && validToken() ?
                         (
                             <>
                                 <Link style={{paddingRight: 0, paddingLeft: 5}} className="white-nav-link nav-link"

@@ -8,19 +8,18 @@ const MainPage = () => {
     }, []);
 
     try {
-        if (user != null) {
-            return (
-                <div>
-                    {'User:' + user.firstName.toString() + " " + user.lastName.toString()}
-                </div>
-            );
-        } else {
-            return (<div>Please login or register</div>);
-        }
-    } catch (e) {
         if (!validToken()) {
             removeSession();
         }
+        return (
+            <div>
+                {getUser() != null ?
+                    'User:' + user.firstName.toString() + " " + user.lastName.toString() :
+                    'Please login or register'}
+            </div>
+        );
+    } catch (e) {
+        removeSession();
     }
 
 }

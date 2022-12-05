@@ -18,7 +18,7 @@ spring:
       mode: always
 app:
   jwtSecret: yourfavoritecolor
-  jwtExpiration: 3600
+  jwtExpiration: 16000
 server:
   error:
     include-message: always
